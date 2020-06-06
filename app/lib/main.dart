@@ -15,12 +15,8 @@ class MyApp extends StatelessWidget {
         //   primarySwatch: Colors.blue,
         //   visualDensity: VisualDensity.adaptivePlatformDensity,
         // ),
-        home: PlatformScaffold(
-          appBar: PlatformAppBar(
-            title: PlatformText('WeClean'),
-          ),
-          body: HomePage(),
-          bottomNavBar: PlatformNavBar(
+        home: PlatformTabScaffold(
+          bottomNavBar: BottomNavigationBar(
             currentIndex: 0,
             items: [
               BottomNavigationBarItem(

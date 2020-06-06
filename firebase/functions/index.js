@@ -25,7 +25,7 @@ exports.latLongToAddress = functions.firestore
         longitude +
         "&key=AIzaSyDD-7OiQsQ_Ti0OIRbcjl8tI56OmR3xrMc"
     );
-    let reverseGeocodingResults = reverseGeoencodingData.results[0];
+    let reverseGeocodingResults = reverseGeoencodingData.results;
     let address = reverseGeocodingResults.formatted_address;
     let types = reverseGeocodingResults.types;
 

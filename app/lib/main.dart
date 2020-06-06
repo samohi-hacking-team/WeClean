@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'homePage.dart';
+import 'homepagerouter.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
+  HomePageRouter homeTabRouter = HomePageRouter();
+
   @override
   Widget build(BuildContext context) {
     return PlatformApp(
@@ -19,9 +22,12 @@ class MyApp extends StatelessWidget {
           appBar: PlatformAppBar(
             title: PlatformText('WeClean'),
           ),
-          body: HomePage(),
+          body: this.homeTabRouter,
           bottomNavBar: PlatformNavBar(
             currentIndex: 0,
+            itemChanged: (v){
+              this.homeTabRouter.currentTab = v;
+            },
             items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import 'homePage.dart';
+import 'mapPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -37,7 +38,7 @@ class _MyAppState extends State<MyApp> {
             case 0:
               return HomePage();
             case 1:
-              return Container();
+              return MapPage();
             case 2:
               return Container();
             default:
@@ -52,8 +53,8 @@ class _MyAppState extends State<MyApp> {
             title: Text('Home'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            title: Text('Create'),
+            icon: Icon(Icons.map),
+            title: Text('Map'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),

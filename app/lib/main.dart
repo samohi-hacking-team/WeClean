@@ -10,25 +10,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PlatformApp(
-        title: 'Flutter Demo',
-        // theme: ThemeData(
-        //   primarySwatch: Colors.blue,
-        //   visualDensity: VisualDensity.adaptivePlatformDensity,
-        // ),
-        home: PlatformTabScaffold(
-          bottomNavBar: BottomNavigationBar(
-            currentIndex: 0,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                title: Text('Home'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.add),
-                title: Text('Create'),
-              ),
-            ],
+      title: 'Flutter Demo',
+      // theme: ThemeData(
+      //   primarySwatch: Colors.blue,
+      //   visualDensity: VisualDensity.adaptivePlatformDensity,
+      // ),
+      home: PlatformTabScaffold(
+        currentIndex: 0,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
           ),
-        ));
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            title: Text('Create'),
+          ),
+        ],
+      ),
+    );
   }
 }

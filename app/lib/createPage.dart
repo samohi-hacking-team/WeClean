@@ -1,9 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+
+import 'package:geolocator/geolocator.dart';
 
 class CreatePage extends StatefulWidget {
   @override
@@ -12,19 +17,20 @@ class CreatePage extends StatefulWidget {
 
 class _CreatePageState extends State<CreatePage> {
   TextEditingController name;
+  TextEditingController address;
   TextEditingController description;
 
   File _image;
   ImagePicker _picker;
   final picker = ImagePicker();
 
+  DateTime date;
+
   Future getImage(source) async {
     try {
       final pickedFile = await _picker.getImage(
         source: source,
-        // maxWidth: maxWidth,
-        // maxHeight: maxHeight,
-        // imageQuality: quality,
+        imageQuality: 100,
       );
       setState(() {
         _image = File(pickedFile.path);
@@ -40,6 +46,7 @@ class _CreatePageState extends State<CreatePage> {
   void initState() {
     super.initState();
     name = new TextEditingController();
+    address = new TextEditingController();
     description = new TextEditingController();
     _picker = new ImagePicker();
   }
@@ -58,6 +65,17 @@ class _CreatePageState extends State<CreatePage> {
               padding: const EdgeInsets.all(8.0),
               child: PlatformTextField(
                 controller: name,
+              ),
+            ),
+          ),
+          PlatformText(
+            'Address',
+          ),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: PlatformTextField(
+                controller: address,
               ),
             ),
           ),
@@ -83,7 +101,33 @@ class _CreatePageState extends State<CreatePage> {
                 height: 64,
                 width: MediaQuery.of(context).size.width / 2 - 22,
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Future<DateTime> _date = showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2020),
+                      lastDate: DateTime(2021),
+                    );
+                    _date.then(
+                      (v) {
+                        Future<TimeOfDay> _time = showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay.now(),
+                        );
+                        _time.then(
+                          (_v) => setState(
+                            () => date = new DateTime(
+                              v.year,
+                              v.month,
+                              v.day,
+                              _v.hour,
+                              _v.minute,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
                   child: PlatformText(
                     'Set Date and Time',
                   ),
@@ -126,6 +170,58 @@ class _CreatePageState extends State<CreatePage> {
                 ),
               ),
             ],
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          PlatformText(date == null
+              ? 'No Date Selected'
+              : DateFormat('MMMM dd, yyyy').format(date) +
+                  ' at ' +
+                  DateFormat('hh:mm').format(date)),
+          SizedBox(
+            height: 50,
+          ),
+          _image == null
+              ? PlatformText(
+                  'No image selected.',
+                )
+              : Image.file(_image),
+          SizedBox(
+            height: 50,
+          ),
+          SizedBox(
+            height: 64,
+            child: RaisedButton(
+              onPressed: () async {
+                Position position = await Geolocator()
+                    .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+                await Firestore.instance.collection('cleanups').add(
+                  {
+                    'name': name.text,
+                    'address':address.text,
+                    'description': description.text,
+                    'datetime': date,
+                    // 'location': position,
+                    'imagePath':'graffiti/${_image.path}',
+                  },
+                );
+
+                StorageReference storageReference = FirebaseStorage.instance
+                    .ref()
+                    .child('graffiti/${_image.path}');
+                StorageUploadTask uploadTask = storageReference.putFile(_image);
+                await uploadTask.onComplete;
+              },
+              child: PlatformText(
+                'Push to Firestore',
+              ),
+              color: Color(0xffeecccc),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
           )
         ],
       ),

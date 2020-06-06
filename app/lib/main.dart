@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
+import 'homePage.dart';
+
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  PlatformTabController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = new PlatformTabController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +30,12 @@ class MyApp extends StatelessWidget {
       //   visualDensity: VisualDensity.adaptivePlatformDensity,
       // ),
       home: PlatformTabScaffold(
+        tabController: _controller,
         currentIndex: 0,
         bodyBuilder: (c, i) {
           switch (i) {
             case 0:
-              return Container();
+              return HomePage();
             case 1:
               return Container();
             case 2:
@@ -35,6 +50,10 @@ class MyApp extends StatelessWidget {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            title: Text('Create'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),

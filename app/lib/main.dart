@@ -3,6 +3,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import 'homePage.dart';
 import 'mapPage.dart';
+import 'createPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,6 +32,18 @@ class _MyAppState extends State<MyApp> {
       //   visualDensity: VisualDensity.adaptivePlatformDensity,
       // ),
       home: PlatformTabScaffold(
+        appBarBuilder: (c, i) {
+          switch (i) {
+            case 0:
+              return PlatformAppBar(
+                title: PlatformText('Cleanups'),
+              );
+            case 2:
+              return PlatformAppBar(
+                title: PlatformText('Create Cleanup'),
+              );
+          }
+        },
         tabController: _controller,
         currentIndex: 0,
         bodyBuilder: (c, i) {
@@ -40,7 +53,7 @@ class _MyAppState extends State<MyApp> {
             case 1:
               return MapPage();
             case 2:
-              return Container();
+              return CreatePage();
             default:
               return Center(
                 child: PlatformText('An Error Occured'),

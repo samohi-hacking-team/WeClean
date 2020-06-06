@@ -9,12 +9,8 @@ class MapPage extends StatelessWidget {
       future: Firestore.instance.collection('cleanups').getDocuments(),
       builder: (c, s) {
         if (s.connectionState != ConnectionState.done) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              CircularProgressIndicator(),
-            ],
+          return Center(
+            child: CircularProgressIndicator(),
           );
         } else {
           QuerySnapshot snapshot = s.data;
@@ -22,10 +18,15 @@ class MapPage extends StatelessWidget {
 
           Set<Marker> markers = new Set<Marker>();
           for (int _i = 0; _i < documents.length; _i++)
-            markers.add(new Marker(
+            markers.add(
+              new Marker(
                 markerId: MarkerId(documents[_i]['address']),
-                position: LatLng(documents[_i]['lat'].toDouble(),
-                    documents[_i]['long'].toDouble())));
+                position: LatLng(
+                  documents[_i]['lat'].toDouble(),
+                  documents[_i]['long'].toDouble(),
+                ),
+              ),
+            );
 
           return PlatformMap(
             initialCameraPosition: CameraPosition(

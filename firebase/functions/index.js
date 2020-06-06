@@ -14,10 +14,10 @@ exports.latLongToAddress = functions.firestore
   .document("cleanups/{cleanup}")
   .onCreate(async (snapshot, context) => {
     let data = snapshot.data();
+    
     let latitude = data.lat;
     let longitude = data.long;
-    latitude = 34.0099;
-    longitude = 118.496;
+
     let reverseGeoencodingData = await fetch(
       "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
         latitude +

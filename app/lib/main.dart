@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
+import 'homePage.dart';
+import 'mapPage.dart';
+import 'createPage.dart';
+
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  PlatformTabController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = new PlatformTabController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,22 +32,42 @@ class MyApp extends StatelessWidget {
       //   visualDensity: VisualDensity.adaptivePlatformDensity,
       // ),
       home: PlatformTabScaffold(
+        appBarBuilder: (c, i) {
+          switch (i) {
+            case 0:
+              return PlatformAppBar(
+                title: PlatformText('Cleanups'),
+              );
+            case 2:
+              return PlatformAppBar(
+                title: PlatformText('Create Cleanup'),
+              );
+          }
+        },
+        tabController: _controller,
         currentIndex: 0,
         bodyBuilder: (c, i) {
           switch (i) {
             case 0:
-              return Container();
-              break;
+              return HomePage();
             case 1:
-              return Container();
+              return MapPage();
             case 2:
-              return Container();
+              return CreatePage();
+            default:
+              return Center(
+                child: PlatformText('An Error Occured'),
+              );
           }
         },
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            title: Text('Map'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),

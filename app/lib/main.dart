@@ -21,11 +21,14 @@ class MyApp extends StatelessWidget {
           switch (i) {
             case 0:
               return Container();
-              break;
             case 1:
               return Container();
             case 2:
               return Container();
+            default:
+              return Center(
+                child: PlatformText('An Error Occured'),
+              );
           }
         },
         items: [

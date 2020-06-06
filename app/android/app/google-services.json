@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "858875155718",
+    "firebase_url": "https://weclean-4af67.firebaseio.com",
+    "project_id": "weclean-4af67",
+    "storage_bucket": "weclean-4af67.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858875155718:android:e50b0370d9d620ffdeba87",
+        "android_client_info": {
+          "package_name": "com.cheezbit.weClean"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "858875155718-huj0ic76uklm2pik9br6a3t14knklnc3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuDI26bMSGoc2WCkhz7fJP6T0t776EDs4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "858875155718-huj0ic76uklm2pik9br6a3t14knklnc3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

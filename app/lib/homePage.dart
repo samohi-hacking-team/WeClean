@@ -81,29 +81,38 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      PlatformText(
-                        document['description'] ?? "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: isMaterial(context)
-                              ? Theme.of(context).textTheme.bodyText1.color
-                              : CupertinoTheme.of(context)
-                                  .textTheme
-                                  .textStyle
-                                  .color,
+                      SizedBox(
+                        height: 15,
+                        child: PlatformText(
+                          document['description'] ?? "",
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: isMaterial(context)
+                                ? Theme.of(context).textTheme.bodyText1.color
+                                : CupertinoTheme.of(context)
+                                    .textTheme
+                                    .textStyle
+                                    .color,
+                          ),
                         ),
                       ),
-                      PlatformText(
-                        document['address'] ?? "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: isMaterial(context)
-                              ? Theme.of(context).textTheme.bodyText1.color
-                              : CupertinoTheme.of(context)
-                                  .textTheme
-                                  .textStyle
-                                  .color,
+                      SizedBox(
+                        height: 13,
+                        child: PlatformText(
+                          document['address'] ?? "",
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: isMaterial(context)
+                                ? Theme.of(context).textTheme.bodyText1.color
+                                : CupertinoTheme.of(context)
+                                    .textTheme
+                                    .textStyle
+                                    .color,
+                          ),
                         ),
                       ),
                     ],

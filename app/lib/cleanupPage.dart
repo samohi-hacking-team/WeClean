@@ -16,8 +16,9 @@ class CleanupPage extends StatelessWidget {
     return PlatformScaffold(
       appBar:
           PlatformAppBar(title: PlatformText(document['name'] ?? 'Cleanup')),
-      body: Column(
+      body: ListView(
         children: [
+          Container(height: 80),
           imageMaker(document['imagePath'], context),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -72,8 +73,8 @@ class CleanupPage extends StatelessWidget {
                   position: LatLng(document['lat'], document['long']),
                   consumeTapEvents: true,
                   infoWindow: InfoWindow(
-                    title: 'PlatformMarker',
-                    snippet: "Hi I'm a Platform Marker",
+                    title: document['address'] ?? "",
+                    snippet: document['description'] ?? "",
                   ),
                   onTap: () {},
                 ),

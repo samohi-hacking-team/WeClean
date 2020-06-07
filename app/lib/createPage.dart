@@ -12,6 +12,9 @@ import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:tflite/tflite.dart';
 
+import 'package:flutter/services.dart';
+
+
 class CreatePage extends StatefulWidget {
   @override
   _CreatePageState createState() => _CreatePageState();
@@ -49,6 +52,39 @@ class _CreatePageState extends State<CreatePage> {
     name = new TextEditingController();
     description = new TextEditingController();
     _picker = new ImagePicker();
+
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+    bool _busy = true;
+
+    loadModel().then((val) {
+      setState(() {
+        _busy = false; 
+      });
+    });
+  }
+
+  Future loadModel() async {
+    Tflite.close();
+    try {
+      String res;
+          res = await Tflite.loadModel(
+            model: "assets/mobilenet_v1_1.0_224.tflite",
+            labels: "assets/mobilenet_v1_1.0_224.txt",
+          );
+      print(res);
+    } on PlatformException {
+      print('Failed to load model.');
+    }
+  }
+
+  Future recognizeImage(File image) async {
+    var recognitions = await Tflite.runModelOnImage(
+      path: image.path,
+      numResults: 6,
+      threshold: 0.05,
+      imageMean: 127.5,
+      imageStd: 127.5,
+    );
   }
 
   @override
@@ -108,39 +144,36 @@ class _CreatePageState extends State<CreatePage> {
             width: MediaQuery.of(context).size.width - 32,
             child: PlatformButton(
               onPressed: () async {
-                await Tflite.close();
-                print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-                String res = await Tflite.loadModel(
-                  model: "tensorflow/model.tflite",
-                  labels: "tensorflow/dict.txt",
-                  numThreads: 1,
-                );
-
-                print(res);
-
                 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~2');
-
                 if (_image != null) {
+                  print(
+                      'inside rn omg I never thought I would ever make it in!!!!');
                   var recognitions = await Tflite.runModelOnImage(
                     path: _image.path,
+                    numResults: 6,
+                    threshold: 0.05,
+                    imageMean: 127.5,
+                    imageStd: 127.5,
                   );
+                  print('I did not finish once I was inside. I am a faliur');
+                  await Tflite.close();
 
                   print('~~~~~~~~~~~~~~~~ done ~~~~~~~~~~~~~~~~~~~~~~~~~');
-
-                  await Tflite.close();
 
                   print(recognitions);
                 }
                 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```');
 
-                Position position = await Geolocator()
-                    .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                // Position position = await Geolocator()
+                //     .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
-                StorageReference storageReference = FirebaseStorage.instance
-                    .ref()
-                    .child('graffiti/${_image.path}');
-                StorageUploadTask uploadTask = storageReference.putFile(_image);
-                await uploadTask.onComplete;
+                // StorageReference storageReference = FirebaseStorage.instance
+                //     .ref()
+                //     .child('graffiti/${_image.path}');
+                // StorageUploadTask uploadTask = storageReference.putFile(_image);
+                // await uploadTask.onComplete;
+
+                print('OMG I FINALLY FINISHED IT FELT SO AMAZINGLY GOOD');
               },
               child: PlatformText(
                 'Submit',

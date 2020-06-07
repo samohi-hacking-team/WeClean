@@ -56,7 +56,7 @@ class _BigBoiState extends State<BigBoi> {
               return PlatformAppBar(
                 title: PlatformText('Create Cleanup'),
               );
-            default: 
+            default:
               return PlatformAppBar(
                 title: PlatformText("Map"),
               );

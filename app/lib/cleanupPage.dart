@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:platform_maps_flutter/platform_maps_flutter.dart';
 
 class CleanupPage extends StatelessWidget {
   final DocumentSnapshot document;
@@ -20,47 +21,67 @@ class CleanupPage extends StatelessWidget {
           imageMaker(document['imagePath'], context),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: PlatformButton(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  PlatformText(
-                    document['name'] ?? "",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 32,
-                      color: isMaterial(context)
-                          ? Theme.of(context).textTheme.bodyText1.color
-                          : CupertinoTheme.of(context).textTheme.textStyle.color,
-                    ),
+            child: Column(
+              children: [
+                PlatformText(
+                  document['name'] ?? "",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 32,
+                    color: isMaterial(context)
+                        ? Theme.of(context).textTheme.bodyText1.color
+                        : CupertinoTheme.of(context).textTheme.textStyle.color,
                   ),
-                  PlatformText(
-                    document['description'] ?? "",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: isMaterial(context)
-                          ? Theme.of(context).textTheme.bodyText1.color
-                          : CupertinoTheme.of(context).textTheme.textStyle.color,
-                    ),
+                ),
+                PlatformText(
+                  document['description'] ?? "",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: isMaterial(context)
+                        ? Theme.of(context).textTheme.bodyText1.color
+                        : CupertinoTheme.of(context).textTheme.textStyle.color,
                   ),
-                  Divider(
-                    height: 12,
+                ),
+                Divider(
+                  height: 12,
+                ),
+                PlatformText(
+                  document['address'] ?? "",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: isMaterial(context)
+                        ? Theme.of(context).textTheme.bodyText1.color
+                        : CupertinoTheme.of(context).textTheme.textStyle.color,
                   ),
-                  PlatformText(
-                    document['address'] ?? "",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: isMaterial(context)
-                          ? Theme.of(context).textTheme.bodyText1.color
-                          : CupertinoTheme.of(context).textTheme.textStyle.color,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 468,
+            child: PlatformMap(
+              initialCameraPosition: CameraPosition(
+                target: LatLng(document['lat'], document['long']),
+                zoom: 12.0,
+              ),
+              markers: Set<Marker>.of([
+                Marker(
+                  markerId: MarkerId('marker'),
+                  position: LatLng(document['lat'], document['long']),
+                  consumeTapEvents: true,
+                  infoWindow: InfoWindow(
+                    title: 'PlatformMarker',
+                    snippet: "Hi I'm a Platform Marker",
+                  ),
+                  onTap: () {},
+                ),
+              ]),
+              myLocationEnabled: true,
+              compassEnabled: true,
+            ),
+          )
         ],
       ),
     );

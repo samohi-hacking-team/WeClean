@@ -58,18 +58,51 @@ class HomePage extends StatelessWidget {
             children: [
               imageMaker(document['imagePath'], context),
               Container(
-                width: ((MediaQuery.of(context).size.width-32)/3)*2,
+                width: ((MediaQuery.of(context).size.width - 32) / 3) * 2,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Flexible(child: PlatformText(
-                      document['description'] ?? "",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: isMaterial(context)
-                            ? Theme.of(context).textTheme.bodyText1.color
-                            : CupertinoTheme.of(context).textTheme.textStyle.color,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      PlatformText(
+                        document['name'] ?? "",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: isMaterial(context)
+                              ? Theme.of(context).textTheme.bodyText1.color
+                              : CupertinoTheme.of(context)
+                                  .textTheme
+                                  .textStyle
+                                  .color,
+                        ),
                       ),
-                    ),
+                      PlatformText(
+                        document['description'] ?? "",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: isMaterial(context)
+                              ? Theme.of(context).textTheme.bodyText1.color
+                              : CupertinoTheme.of(context)
+                                  .textTheme
+                                  .textStyle
+                                  .color,
+                        ),
+                      ),
+                      PlatformText(
+                        document['address'] ?? "",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: isMaterial(context)
+                              ? Theme.of(context).textTheme.bodyText1.color
+                              : CupertinoTheme.of(context)
+                                  .textTheme
+                                  .textStyle
+                                  .color,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -86,19 +119,18 @@ class HomePage extends StatelessWidget {
         builder: (c, s) {
           if (s.connectionState != ConnectionState.done) {
             return IntrinsicHeight(
-                          child: Container(
+              child: Container(
                 color: Color(0xFFf8c630).withOpacity(.25),
                 child: Center(
                   child: PlatformCircularProgressIndicator(),
                 ),
-                
-                width: ((MediaQuery.of(context).size.width-32))/ 3,
+                width: ((MediaQuery.of(context).size.width - 32)) / 3,
               ),
             );
           } else if (s.hasError) {
             return Container(
               color: Color(0xFFf8c630).withOpacity(.25),
-              width:  ((MediaQuery.of(context).size.width-32))/ 3,
+              width: ((MediaQuery.of(context).size.width - 32)) / 3,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -113,7 +145,7 @@ class HomePage extends StatelessWidget {
               downloadLink,
               fit: BoxFit.fill,
               height: MediaQuery.of(context).size.width / 3,
-              width:  ((MediaQuery.of(context).size.width-32))/3,
+              width: ((MediaQuery.of(context).size.width - 32)) / 3,
               loadingBuilder: (BuildContext context, Widget child,
                   ImageChunkEvent loadingProgress) {
                 if (loadingProgress == null) return child;

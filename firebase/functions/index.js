@@ -56,6 +56,8 @@ exports.latLongToAddress = functions.firestore
   });
 
 exports.getAllCleanups = functions.https.onRequest(async (req, res) => {
+  res.set('Access-Control-Allow-Origin', "*");
+  res.set('Access-Control-Allow-Methods', 'GET, POST');
   let documents = await admin
     .firestore()
     .collection("cleanups")

@@ -12,9 +12,8 @@ admin.initializeApp();
 
 exports.latLongToAddress = functions.firestore
   .document("cleanups/{cleanup}")
-  .onCreate(async (snapshot, context) => {
-    let data = snapshot.data();
-    
+  .onUpdate(async (snapshot, context) => {
+    let data = snapshot.after.data();
     let latitude = data.lat;
     let longitude = data.long;
 
@@ -25,7 +24,7 @@ exports.latLongToAddress = functions.firestore
         longitude +
         "&key=AIzaSyDD-7OiQsQ_Ti0OIRbcjl8tI56OmR3xrMc"
     );
-    let reverseGeocodingResults = reverseGeoencodingData.results;
+    let reverseGeocodingResults = reverseGeoencodingData;
     // let address = reverseGeocodingResults.formatted_address;
     // let types = reverseGeocodingResults.types;
 
@@ -40,8 +39,8 @@ exports.latLongToAddress = functions.firestore
     // let name = placeDataResults.name;
     // let openNow = placeDataResults.opening_hours.open_now;
 
-    return snapshot.ref.update({
-      results: reverseGeocodingResults
+    return snapshot.after.ref.update({
+      results: (reverseGeocodingResults).toString(),
       //openNow: openNow,
     });
 

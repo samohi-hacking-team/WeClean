@@ -20,6 +20,7 @@ dependencies:
   image_picker: ^0.6.7+1
   intl: ^0.16.1
   geolocator: ^5.3.2+2
+  tflite: ^1.0.6
 
 
 dev_dependencies:
@@ -29,3 +30,8 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
+  assets:
+    - tensorflow/dict.txt
+    - tensorflow/manifest.json
+    - tensorflow/model.tflite

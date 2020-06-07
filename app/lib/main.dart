@@ -46,6 +46,10 @@ class _MyAppState extends State<MyApp> {
               return PlatformAppBar(
                 title: PlatformText('Create Cleanup'),
               );
+            default: 
+              return PlatformAppBar(
+                title: PlatformText("Map"),
+              );
           }
         },
         tabController: _controller,

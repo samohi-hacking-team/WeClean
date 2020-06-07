@@ -16,18 +16,20 @@ class _SignInPageState extends State<SignInPage> {
 
   Future<void> _handleSignIn() async {
     try {
-      print('starting');
-      final FirebaseAuth _auth = FirebaseAuth.instance;
+      try {
+        print('starting');
+        final FirebaseAuth _auth = FirebaseAuth.instance;
 
-      GoogleSignInAccount user = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication googleAuth = await user.authentication;
+        GoogleSignInAccount user = await _googleSignIn.signIn();
+        final GoogleSignInAuthentication googleAuth = await user.authentication;
 
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      final FirebaseUser fbUser =
-          (await _auth.signInWithCredential(credential)).user;
+        final AuthCredential credential = GoogleAuthProvider.getCredential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+        final FirebaseUser fbUser =
+            (await _auth.signInWithCredential(credential)).user;
+      } catch (e) {}
 
       Navigator.of(context).push(
         platformPageRoute(
@@ -41,6 +43,13 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   bool signedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth auth = FirebaseAuth.instance;
+    auth.currentUser().then((value) => value?.uid ?? "NULL");
+  }
 
   @override
   Widget build(BuildContext context) {

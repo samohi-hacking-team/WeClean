@@ -158,6 +158,21 @@ class _CreatePageState extends State<CreatePage> {
                 }
                 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```');
                 Position latlong = (await Geolocator().getCurrentPosition());
+                showPlatformDialog(
+                    context: context,
+                    builder: (c) => PlatformAlertDialog(
+                          title: Text("Successfully Uploaded"),
+                          content: Text(
+                              "Your report was just uploaded. Thanks for supporting your community"),
+                          actions: [
+                            PlatformDialogAction(
+                              child: Text("Ok"),
+                              onPressed: () {
+                                Navigator.pop(c);
+                              },
+                            )
+                          ],
+                        ));
                 FirebaseStorage.instance
                     .ref()
                     .child("graffiti/${DateTime.now().microsecondsSinceEpoch}")
@@ -170,21 +185,6 @@ class _CreatePageState extends State<CreatePage> {
                     'description': description.text,
                     'imagePath': value.ref.path,
                   });
-                  showPlatformDialog(
-                      context: context,
-                      builder: (c) => PlatformAlertDialog(
-                            title: Text("Successfully Uploaded"),
-                            content: Text(
-                                "Your report was just uploaded. Thanks for supporting your community"),
-                            actions: [
-                              PlatformDialogAction(
-                                child: Text("Ok"),
-                                onPressed: () {
-                                  Navigator.pop(c);
-                                },
-                              )
-                            ],
-                          ));
                 });
               },
               child: PlatformText(

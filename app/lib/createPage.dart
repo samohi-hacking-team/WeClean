@@ -10,6 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:tflite/tflite.dart';
 
+import 'package:flutter/services.dart';
+
+
 class CreatePage extends StatefulWidget {
   @override
   _CreatePageState createState() => _CreatePageState();
@@ -140,14 +143,16 @@ class _CreatePageState extends State<CreatePage> {
                 }
                 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```');
 
-                Position position = await Geolocator()
-                    .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                // Position position = await Geolocator()
+                //     .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
-                StorageReference storageReference = FirebaseStorage.instance
-                    .ref()
-                    .child('graffiti/${_image.path}');
-                StorageUploadTask uploadTask = storageReference.putFile(_image);
-                await uploadTask.onComplete;
+                // StorageReference storageReference = FirebaseStorage.instance
+                //     .ref()
+                //     .child('graffiti/${_image.path}');
+                // StorageUploadTask uploadTask = storageReference.putFile(_image);
+                // await uploadTask.onComplete;
+
+                print('OMG I FINALLY FINISHED IT FELT SO AMAZINGLY GOOD');
               },
               child: PlatformText(
                 'Submit',

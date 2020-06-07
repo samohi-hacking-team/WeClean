@@ -69,7 +69,7 @@ class _SignInPageState extends State<SignInPage> {
               ),
             )
           : Center(
-              child: OutlineButton(
+              child: PlatformButton(
                 onPressed: () {
                   _handleSignIn();
                 },

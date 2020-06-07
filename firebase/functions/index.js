@@ -12,8 +12,8 @@ admin.initializeApp();
 
 exports.latLongToAddress = functions.firestore
   .document("cleanups/{cleanup}")
-  .onUpdate(async (snapshot, context) => {
-    let data = snapshot.after.data();
+  .onCreate(async (snapshot, context) => {
+    let data = snapshot.data();
     let latitude = data.lat;
     let longitude = data.long;
 
@@ -42,7 +42,7 @@ exports.latLongToAddress = functions.firestore
     //let business_status = placeDataResults.business_status;
     // let openNow = placeDataResults.opening_hours.open_now;
 
-    return snapshot.after.ref.update({
+    return snapshot.ref.update({
       results: {},
       address: address,
       types: types,

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:geolocator/geolocator.dart';
+import 'package:platform_maps_flutter/platform_maps_flutter.dart';
 import 'package:tflite/tflite.dart';
 
 import 'package:flutter/services.dart';
@@ -68,12 +70,19 @@ class _CreatePageState extends State<CreatePage> {
             height: 90,
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: PlatformText(
               'Describe what needs cleaning',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+                color: isMaterial(context)
+                    ? (Theme.of(context).brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white)
+                    : (CupertinoTheme.brightnessOf(context) == Brightness.light
+                        ? CupertinoColors.black
+                        : CupertinoColors.white),
               ),
               textAlign: TextAlign.center,
             ),
@@ -81,6 +90,15 @@ class _CreatePageState extends State<CreatePage> {
           PlatformTextField(
             maxLines: 4,
             maxLength: 100,
+            style: TextStyle(
+              color: isMaterial(context)
+                  ? (Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.white)
+                  : (CupertinoTheme.brightnessOf(context) == Brightness.light
+                      ? CupertinoColors.black
+                      : CupertinoColors.white),
+            ),
             maxLengthEnforced: true,
             controller: description,
           ),
@@ -139,26 +157,42 @@ class _CreatePageState extends State<CreatePage> {
                   //print(recognitions);
                 }
                 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```');
-
-                // Position position = await Geolocator()
-                //     .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-
-                // StorageReference storageReference = FirebaseStorage.instance
-                //     .ref()
-                //     .child('graffiti/${_image.path}');
-                // StorageUploadTask uploadTask = storageReference.putFile(_image);
-                // await uploadTask.onComplete;
-
-                print('OMG I FINALLY FINISHED IT FELT SO AMAZINGLY GOOD');
+                Position latlong = (await Geolocator().getCurrentPosition());
+                FirebaseStorage.instance
+                    .ref()
+                    .child("graffiti/${DateTime.now().microsecondsSinceEpoch}")
+                    .putData(_image.readAsBytesSync())
+                    .onComplete
+                    .then((value) async {
+                  await Firestore.instance.collection("cleanups").add({
+                    'lat': latlong.latitude,
+                    'long': latlong.longitude,
+                    'description': description.text,
+                    'imagePath': value.ref.path,
+                  });
+                  showPlatformDialog(
+                      context: context,
+                      builder: (c) => PlatformAlertDialog(
+                            title: Text("Successfully Uploaded"),
+                            content: Text(
+                                "Your report was just uploaded. Thanks for supporting your community"),
+                            actions: [
+                              PlatformDialogAction(
+                                child: Text("Ok"),
+                                onPressed: () {
+                                  Navigator.pop(c);
+                                },
+                              )
+                            ],
+                          ));
+                });
               },
               child: PlatformText(
                 'Submit',
               ),
               color: isMaterial(context)
                   ? Colors.blue
-                  : (CupertinoTheme.brightnessOf(context) == Brightness.light
-                      ? CupertinoColors.activeBlue
-                      : CupertinoColors.systemGrey4),
+                  : CupertinoColors.activeBlue,
             ),
           ),
           Container(

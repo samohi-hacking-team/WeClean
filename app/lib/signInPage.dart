@@ -43,6 +43,13 @@ class _SignInPageState extends State<SignInPage> {
   bool signedIn = false;
 
   @override
+  void initState() {
+    super.initState();
+    FirebaseAuth auth = FirebaseAuth.instance;
+    auth.currentUser().then((value) => value?.uid ?? "NULL");
+  }
+
+  @override
   Widget build(BuildContext context) {
     return PlatformScaffold(
       body: signedIn

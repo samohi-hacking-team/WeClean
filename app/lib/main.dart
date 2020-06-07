@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PlatformApp(
-      title: 'Flutter Demo',
+      title: 'WeClean',
       android:(c)=> MaterialAppData(
         darkTheme: ThemeData.dark(),
         theme: ThemeData(),
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       //   primarySwatch: Colors.blue,
       //   visualDensity: VisualDensity.adaptivePlatformDensity,
       // ),
-      home: BigBoi(),
+      home: SignInPage(),
     );
   }
 }

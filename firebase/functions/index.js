@@ -1,6 +1,6 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const fetch = require("node-fetch");
+const superagent = require("superagent");
 
 admin.initializeApp();
 // // Create and Deploy Your First Cloud Functions
@@ -17,14 +17,15 @@ exports.latLongToAddress = functions.firestore
     let latitude = data.lat;
     let longitude = data.long;
 
-    let reverseGeoencodingData = await fetch(
+    let reverseGeoencodingData = await superagent.get(
       "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
         latitude +
         "," +
         longitude +
         "&key=AIzaSyDD-7OiQsQ_Ti0OIRbcjl8tI56OmR3xrMc"
     );
-    let reverseGeocodingResults = reverseGeoencodingData;
+
+   
     // let address = reverseGeocodingResults.formatted_address;
     // let types = reverseGeocodingResults.types;
 
@@ -40,7 +41,7 @@ exports.latLongToAddress = functions.firestore
     // let openNow = placeDataResults.opening_hours.open_now;
 
     return snapshot.after.ref.update({
-      results: (reverseGeocodingResults).toString(),
+      results: JSON.parse(reverseGeoencodingData.text),
       //openNow: openNow,
     });
 
@@ -53,13 +54,11 @@ exports.getAllCleanups = functions.https.onRequest(async (req, res) => {
     .collection("cleanups")
     .listDocuments();
 
-
   const promises = documents.map(async (value) => {
-   return (await value.get()).data();
+    return (await value.get()).data();
   });
 
   const docs = await Promise.all(promises);
-  
 
   return res.status(200).send(docs);
 });

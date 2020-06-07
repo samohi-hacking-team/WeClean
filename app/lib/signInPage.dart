@@ -1,3 +1,4 @@
+import 'package:app/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -9,17 +10,31 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [
-      'email',
-    ]
-  );
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: [
+    'email',
+  ]);
 
   Future<void> _handleSignIn() async {
     try {
       print('starting');
-      await _googleSignIn.signIn();
-      print('done');
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+
+      GoogleSignInAccount user = await _googleSignIn.signIn();
+      final GoogleSignInAuthentication googleAuth = await user.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      final FirebaseUser fbUser =
+          (await _auth.signInWithCredential(credential)).user;
+
+      Navigator.of(context).push(
+        platformPageRoute(
+          context: context,
+          builder: (c) => BigBoi(),
+        ),
+      );
     } catch (error) {
       print(error);
     }
@@ -49,7 +64,7 @@ class _SignInPageState extends State<SignInPage> {
                 onPressed: () {
                   _handleSignIn();
                 },
-                child: Text("SignIn with Goolge"),
+                child: Text("Sign In with Google"),
               ),
             ),
     );

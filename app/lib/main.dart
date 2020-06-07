@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return PlatformApp(
       title: 'WeClean',
-      android:(c)=> MaterialAppData(
+      android: (c) => MaterialAppData(
         darkTheme: ThemeData.dark(),
         theme: ThemeData(),
       ),

@@ -25,23 +25,30 @@ exports.latLongToAddress = functions.firestore
         "&key=AIzaSyDD-7OiQsQ_Ti0OIRbcjl8tI56OmR3xrMc"
     );
 
-   
-    // let address = reverseGeocodingResults.formatted_address;
-    // let types = reverseGeocodingResults.types;
+    let reverseGeocodingResults = JSON.parse(reverseGeoencodingData.text)
+      .results[0];
+    let address = reverseGeocodingResults.formatted_address;
+    let types = reverseGeocodingResults.types;
 
-    // let place_id = reverseGeocodingResults.place_id;
-    // let placeData = await fetch(
-    //   "https://maps.googleapis.com/maps/api/place/details/json?placeid=" +
-    //     place_id +
-    //     "&key=AIzaSyDD-7OiQsQ_Ti0OIRbcjl8tI56OmR3xrMc"
-    // );
+    let place_id = reverseGeocodingResults.place_id;
+    let placeData = await superagent.get(
+      "https://maps.googleapis.com/maps/api/place/details/json?placeid=" +
+        place_id +
+        "&key=AIzaSyDD-7OiQsQ_Ti0OIRbcjl8tI56OmR3xrMc"
+    );
 
-    // let placeDataResults = placeData.result;
-    // let name = placeDataResults.name;
+    let placeDataResults = JSON.parse(placeData.text).result;
+    let name = placeDataResults.name;
+    //let business_status = placeDataResults.business_status;
     // let openNow = placeDataResults.opening_hours.open_now;
 
     return snapshot.after.ref.update({
-      results: JSON.parse(reverseGeoencodingData.text),
+      results: {},
+      address: address,
+      types: types,
+      placeResults: {},
+      name: name,
+     // business_status: business_status,
       //openNow: openNow,
     });
 

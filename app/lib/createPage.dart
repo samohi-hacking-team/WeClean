@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 
 import 'package:geolocator/geolocator.dart';
 import 'package:tflite/tflite.dart';
@@ -52,39 +50,12 @@ class _CreatePageState extends State<CreatePage> {
     name = new TextEditingController();
     description = new TextEditingController();
     _picker = new ImagePicker();
-
-    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-    bool _busy = true;
-
-    loadModel().then((val) {
-      setState(() {
-        _busy = false; 
-      });
-    });
-  }
-
-  Future loadModel() async {
-    Tflite.close();
-    try {
-      String res;
-          res = await Tflite.loadModel(
-            model: "assets/mobilenet_v1_1.0_224.tflite",
-            labels: "assets/mobilenet_v1_1.0_224.txt",
-          );
-      print(res);
-    } on PlatformException {
-      print('Failed to load model.');
-    }
-  }
-
-  Future recognizeImage(File image) async {
-    var recognitions = await Tflite.runModelOnImage(
-      path: image.path,
-      numResults: 6,
-      threshold: 0.05,
-      imageMean: 127.5,
-      imageStd: 127.5,
-    );
+    Tflite.loadModel(
+      model: "tensorflow/model.tflite",
+      labels: "tensorflow/dict.txt",
+      isAsset: true,
+      numThreads: 1,
+    ).then((value) => (print("RESPONSEEE $value")));
   }
 
   @override
@@ -120,9 +91,11 @@ class _CreatePageState extends State<CreatePage> {
             height: 8,
           ),
           PlatformButton(
-            child: Text(this._image != null
-                ? "Take a different picture"
-                : "Take a picture"),
+            child: Text(
+              this._image != null
+                  ? "Take a different picture"
+                  : "Take a picture",
+            ),
             onPressed: () => getImage(
               ImageSource.gallery,
             ),
@@ -144,23 +117,29 @@ class _CreatePageState extends State<CreatePage> {
             width: MediaQuery.of(context).size.width - 32,
             child: PlatformButton(
               onPressed: () async {
-                print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~2');
+                print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+
                 if (_image != null) {
-                  print(
-                      'inside rn omg I never thought I would ever make it in!!!!');
-                  var recognitions = await Tflite.runModelOnImage(
-                    path: _image.path,
-                    numResults: 6,
-                    threshold: 0.05,
-                    imageMean: 127.5,
-                    imageStd: 127.5,
-                  );
-                  print('I did not finish once I was inside. I am a faliur');
-                  await Tflite.close();
+                  Tflite.runModelOnBinary(
+                    asynch: true,
+                    numResults: 1,
+                    binary: _image.readAsBytesSync(),
+                  )
+                      .timeout(Duration(seconds: 20), onTimeout: () {
+                        return ["Graffiti on bricks"];
+                      })
+                      .then(
+                        (value) => print(
+                          "RESPONSE" + value.toString(),
+                        ),
+                      )
+                      .whenComplete(
+                        () => Tflite.close(),
+                      );
 
                   print('~~~~~~~~~~~~~~~~ done ~~~~~~~~~~~~~~~~~~~~~~~~~');
 
-                  print(recognitions);
+                  //print(recognitions);
                 }
                 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```');
 

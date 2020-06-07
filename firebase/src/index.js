@@ -61,7 +61,7 @@ window.initMap = async () => {
         layers: [
           //scatterplot(data),
           heatmap(data),
-          hexagon(data)
+          //hexagon(data)
         ],
       });
 

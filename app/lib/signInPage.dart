@@ -31,7 +31,7 @@ class _SignInPageState extends State<SignInPage> {
             (await _auth.signInWithCredential(credential)).user;
       } catch (e) {}
 
-      Navigator.of(context).push(
+      Navigator.of(context).pushReplacement(
         platformPageRoute(
           context: context,
           builder: (c) => BigBoi(),

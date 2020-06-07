@@ -12,7 +12,6 @@ import 'package:tflite/tflite.dart';
 
 import 'package:flutter/services.dart';
 
-
 class CreatePage extends StatefulWidget {
   @override
   _CreatePageState createState() => _CreatePageState();
@@ -25,6 +24,7 @@ class _CreatePageState extends State<CreatePage> {
   File _image;
   ImagePicker _picker;
   final picker = ImagePicker();
+  List tags;
 
   DateTime date;
 
@@ -109,9 +109,6 @@ class _CreatePageState extends State<CreatePage> {
           SizedBox(
             height: 50,
           ),
-          Expanded(
-            child: Container(),
-          ),
           SizedBox(
             height: 64,
             width: MediaQuery.of(context).size.width - 32,
@@ -120,25 +117,25 @@ class _CreatePageState extends State<CreatePage> {
                 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 
                 if (_image != null) {
-                  Tflite.runModelOnBinary(
+                  var output = await Tflite.runModelOnImage(
+                    path: _image.path,
+                    imageMean: 0.0,
+                    imageStd: 255.0,
+                    numResults: 2,
+                    threshold: 0.2,
                     asynch: true,
-                    numResults: 1,
-                    binary: _image.readAsBytesSync(),
-                  )
-                      .timeout(Duration(seconds: 20), onTimeout: () {
-                        return ["Graffiti on bricks"];
-                      })
-                      .then(
-                        (value) => print(
-                          "RESPONSE" + value.toString(),
-                        ),
-                      )
-                      .whenComplete(
-                        () => Tflite.close(),
-                      );
+                  );
 
                   print('~~~~~~~~~~~~~~~~ done ~~~~~~~~~~~~~~~~~~~~~~~~~');
+                  print(output);
+                  if (output == []) {
+                    tags.add("Graffiti on bricks");
+                  } else {
+                    tags = output;
+                  }
 
+                  print("WOWOWOWOOW");
+                  Tflite.close();
                   //print(recognitions);
                 }
                 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```');

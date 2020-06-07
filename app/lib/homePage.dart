@@ -7,31 +7,97 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<DocumentSnapshot> children = [];
+
+  Future<List<DocumentSnapshot>> get getChildren async {
+    return (await Firestore.instance.collection('cleanups').getDocuments())
+        .documents;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    this.getChildren;
+    loadChildren();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Container(
+            height: Platform.isIOS ? 88.0 : 0,
+          ),
+        ),
+        if (Platform.isIOS)
+          CupertinoSliverRefreshControl(
+            refreshTriggerPullDistance: 80,
+            builder: (c, s, d, b, a) {
+              switch (s) {
+                case RefreshIndicatorMode.inactive:
+                  return Container();
+                case RefreshIndicatorMode.drag:
+                  return Container();
+                case RefreshIndicatorMode.armed:
+                  return Padding(
+                    padding: EdgeInsets.only(top: d),
+                    child: CupertinoActivityIndicator(),
+                  );
+
+                case RefreshIndicatorMode.refresh:
+                  return Padding(
+                    padding: EdgeInsets.only(top: d),
+                    child: CupertinoActivityIndicator(),
+                  );
+                case RefreshIndicatorMode.done:
+                  return Container();
+                default:
+                  return Padding(
+                    padding: EdgeInsets.only(top: d),
+                    child: CupertinoActivityIndicator(),
+                  );
+              }
+            },
+            onRefresh: () async {
+              await loadChildren();
+            },
+          ),
+        this.children.isEmpty
+            ? Center(child: PlatformCircularProgressIndicator())
+            : SliverList(
+                delegate: SliverChildListDelegate(
+                  List.generate(
+                    this.children.length,
+                    (i) => Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8),
+                      child: cleanupButton(children[i], context),
+                    ),
+                  ),
+                ),
+              ),
+      ],
+    );
     return Padding(
       padding: EdgeInsets.only(top: Platform.isIOS ? 80.0 : 0),
       child: FutureBuilder(
         future: Firestore.instance.collection('cleanups').getDocuments(),
         builder: (c, s) {
           if (s.connectionState != ConnectionState.done) {
-            return Center(
-              child: CircularProgressIndicator(),
+            return Container(
+              child: Center(
+                child: PlatformCircularProgressIndicator(),
+              ),
             );
           } else {
-            QuerySnapshot snapshot = s.data;
-            List documents = snapshot.documents;
-
-            return ListView.separated(
-              shrinkWrap: true,
-              padding: EdgeInsets.all(16),
-              itemCount: documents.length,
-              separatorBuilder: (c, i) {
-                return Container(height: 18);
-              },
-              itemBuilder: (c, i) => cleanupButton(documents[i], c),
-            );
+            //return ChildrenBuilder();
           }
         },
       ),
@@ -133,7 +199,8 @@ class HomePage extends StatelessWidget {
           if (s.connectionState != ConnectionState.done) {
             return IntrinsicHeight(
               child: Container(
-                color: Color(0xFFf8c630).withOpacity(.25),
+                height: MediaQuery.of(context).size.width / 3,
+                color: Colors.blue.withOpacity(.25),
                 child: Center(
                   child: PlatformCircularProgressIndicator(),
                 ),
@@ -182,5 +249,15 @@ class HomePage extends StatelessWidget {
     } catch (e) {
       return Container();
     }
+  }
+
+  Future<void> loadChildren() async {
+    setState(() {
+      this.children = [];
+    });
+    var temp = await this.getChildren;
+    setState(() {
+      this.children = temp;
+    });
   }
 }

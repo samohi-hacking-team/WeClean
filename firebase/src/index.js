@@ -28,7 +28,7 @@ const heatmap = (data) =>
     data: data,
     getPosition: (d) => [d.long, d.lat],
     getWeight: (d) => 1,
-    radiusPixels: 60,
+    radiusPixels: 100,
   });
 
 const hexagon = (data) =>
@@ -40,12 +40,12 @@ const hexagon = (data) =>
       return [d.long, d.lat];
     },
     getElevationWeight: (d) => 1,
-    elevationScale: 100,
-    extruded: true,
-    radius: 1609,
+    elevationScale: 1,
+    extruded: false,
+    radius: 300,
     opacity: 0.6,
-    coverage: 0.88,
-    lowerPercentile: 50,
+    coverage: 0.9,
+    lowerPercentile: 0,
   });
 
 window.initMap = async () => {

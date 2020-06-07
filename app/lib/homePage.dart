@@ -64,17 +64,21 @@ class HomePage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      PlatformText(
-                        document['name'] ?? "",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: isMaterial(context)
-                              ? Theme.of(context).textTheme.bodyText1.color
-                              : CupertinoTheme.of(context)
-                                  .textTheme
-                                  .textStyle
-                                  .color,
+                      SizedBox(
+                        height: 23,
+                        child: PlatformText(
+                          document['name'] ?? "",
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 22,
+                            color: isMaterial(context)
+                                ? Theme.of(context).textTheme.bodyText1.color
+                                : CupertinoTheme.of(context)
+                                    .textTheme
+                                    .textStyle
+                                    .color,
+                          ),
                         ),
                       ),
                       PlatformText(

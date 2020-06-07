@@ -140,6 +140,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       PlatformText(
                         document['name'] ?? "",
+                        maxLines: 2,
                         textAlign: TextAlign.left,
                         //overflow: TextOverflow.,
                         style: TextStyle(

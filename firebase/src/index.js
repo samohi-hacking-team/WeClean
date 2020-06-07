@@ -4,6 +4,7 @@ import { ScatterplotLayer } from '@deck.gl/layers';
 import { HeatmapLayer } from '@deck.gl/aggregation-layers';
 
 const url = 'https://us-central1-weclean-4af67.cloudfunctions.net/getAllCleanups';
+// const url = './getAllCleanups.json'
 
 const scatterplot = () => new ScatterplotLayer({
     id: 'scatter',
@@ -24,19 +25,6 @@ const scatterplot = () => new ScatterplotLayer({
     radiusPixels: 60,
 });
 
-const hexagon = () => new HexagonLayer({
-    id: 'hex',
-    data: url,
-    getPosition: d => [d.long, d.lat],
-    getElevationWeight: d => 1,
-    elevationScale: 100,
-    extruded: true,
-    radius: 1609,         
-    opacity: 0.6,        
-    coverage: 0.88,
-    lowerPercentile: 50
-});
-
 window.initMap = () => {
 
     const map = new google.maps.Map(document.getElementById('map'), {
@@ -48,7 +36,6 @@ window.initMap = () => {
         layers: [
             scatterplot(),
             heatmap(),
-            hexagon()
         ],
     });
 

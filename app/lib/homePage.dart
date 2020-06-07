@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'cleanupPage.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -42,7 +42,6 @@ class HomePage extends StatelessWidget {
       ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: PlatformButton(
-          //color: Color(0xffddeeef),
           padding: EdgeInsets.zero,
           color: isMaterial(context)
               ? (Theme.of(context).brightness == Brightness.light
@@ -51,9 +50,15 @@ class HomePage extends StatelessWidget {
               : (CupertinoTheme.brightnessOf(context) == Brightness.light
                   ? CupertinoColors.lightBackgroundGray
                   : CupertinoColors.systemGrey6),
-          onPressed: () {
-            FirebaseAuth.instance.signOut();
-          },
+          onPressed: () => Navigator.push(
+            context,
+            platformPageRoute(
+              builder: (c) => CleanupPage(
+                document: document,
+              ),
+              context: context,
+            ),
+          ),
           child: Row(
             children: [
               imageMaker(document['imagePath'], context),

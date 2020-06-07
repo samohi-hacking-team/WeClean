@@ -48,7 +48,13 @@ class _SignInPageState extends State<SignInPage> {
   void initState() {
     super.initState();
     FirebaseAuth auth = FirebaseAuth.instance;
-    auth.currentUser().then((value) => value?.uid ?? "NULL");
+    auth.currentUser().then((value) => Navigator.of(context).pushReplacement(
+          platformPageRoute(
+            context: context,
+            builder: (c) => BigBoi(),
+          ),
+        ));//COMMENT TO DISABLE DISABLE AUTO LOGIN
+    print("SMH");
   }
 
   @override

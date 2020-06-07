@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         this.children.isEmpty
-            ? Center(child: PlatformCircularProgressIndicator())
+            ? SliverFillRemaining(child: Center(child: PlatformCircularProgressIndicator()))
             : SliverList(
                 delegate: SliverChildListDelegate(
                   List.generate(
@@ -78,7 +78,10 @@ class _HomePageState extends State<HomePage> {
                     (i) => Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 8),
-                      child: cleanupButton(children[i], context),
+                      child: cleanupButton(
+                        children[i],
+                        context,
+                      ),
                     ),
                   ),
                 ),
@@ -138,9 +141,9 @@ class _HomePageState extends State<HomePage> {
                       PlatformText(
                         document['name'] ?? "",
                         textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
+                        //overflow: TextOverflow.,
                         style: TextStyle(
-                          fontSize: 26,
+                          fontSize: 22,
                           color: isMaterial(context)
                               ? Theme.of(context).textTheme.bodyText1.color
                               : CupertinoTheme.of(context)
@@ -149,7 +152,9 @@ class _HomePageState extends State<HomePage> {
                                   .color,
                         ),
                       ),
-                      SizedBox(height: 8,),
+                      SizedBox(
+                        height: 8,
+                      ),
                       PlatformText(
                         document['description'] ?? "",
                         textAlign: TextAlign.left,
@@ -164,13 +169,16 @@ class _HomePageState extends State<HomePage> {
                                   .color,
                         ),
                       ),
-                      SizedBox(height: 8,),
+                      SizedBox(
+                        height: 8,
+                      ),
                       PlatformText(
                         (document['address'] ?? "").split(', ')[1],
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                           color: isMaterial(context)
                               ? Theme.of(context).textTheme.bodyText1.color
                               : CupertinoTheme.of(context)

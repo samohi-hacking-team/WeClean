@@ -1,25 +1,37 @@
 <!DOCTYPE html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport", content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="UTF-8">
+  <meta name="viewport" , content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>WeClean</title>
+  <title>WeClean</title>
 
-    <script src="main.js"></script>
-    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4oDlwbX8VaxzJsexCz9k81XAzgJPZ1iM&callback=initMap"></script>
+  <script src="main.js"></script>
+  <script defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA4oDlwbX8VaxzJsexCz9k81XAzgJPZ1iM&callback=initMap"></script>
 
-    <style>
-        body {
-            margin: 0;
-        }
+  <style>
+    body {
+      margin: 0;
+    }
 
-        #map {
-            height: 100vh;
-            width: 100vw;
-        }
-    </style>
+    #map {
+      height: 100vh;
+      width: 100vw;
+    }
+  </style>
+  <style>
+    #tooltip {
+      position: absolute;
+      background: white;
+      margin: 10px;
+      padding: 10px;
+    }
+  </style>
 </head>
+
 <body>
-    <div id="map"></div>
+  <div id="map"></div>
+  <div id="tooltip"></div>
 </body>

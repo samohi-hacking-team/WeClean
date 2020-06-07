@@ -108,18 +108,29 @@ class _CreatePageState extends State<CreatePage> {
             width: MediaQuery.of(context).size.width - 32,
             child: PlatformButton(
               onPressed: () async {
+                await Tflite.close();
                 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-                await Tflite.loadModel(
+                String res = await Tflite.loadModel(
                   model: "tensorflow/model.tflite",
                   labels: "tensorflow/dict.txt",
                   numThreads: 1,
                 );
 
+                print(res);
+
                 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~2');
 
-                print(await Tflite.runModelOnImage(
-                  path: _image.path,
-                ));
+                if (_image != null) {
+                  var recognitions = await Tflite.runModelOnImage(
+                    path: _image.path,
+                  );
+
+                  print('~~~~~~~~~~~~~~~~ done ~~~~~~~~~~~~~~~~~~~~~~~~~');
+
+                  await Tflite.close();
+
+                  print(recognitions);
+                }
                 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```');
 
                 Position position = await Geolocator()

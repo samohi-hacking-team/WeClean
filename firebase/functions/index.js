@@ -25,9 +25,9 @@ exports.latLongToAddress = functions.firestore
         longitude +
         "&key=AIzaSyDD-7OiQsQ_Ti0OIRbcjl8tI56OmR3xrMc"
     );
-    let reverseGeocodingResults = reverseGeoencodingData.results[0];
-    let address = reverseGeocodingResults.formatted_address;
-    let types = reverseGeocodingResults.types;
+    let reverseGeocodingResults = reverseGeoencodingData.results;
+    // let address = reverseGeocodingResults.formatted_address;
+    // let types = reverseGeocodingResults.types;
 
     // let place_id = reverseGeocodingResults.place_id;
     // let placeData = await fetch(
@@ -41,9 +41,7 @@ exports.latLongToAddress = functions.firestore
     // let openNow = placeDataResults.opening_hours.open_now;
 
     return snapshot.ref.update({
-      address: address,
-      types: types,
-      //name: name,
+      results: reverseGeocodingResults
       //openNow: openNow,
     });
 

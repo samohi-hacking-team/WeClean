@@ -27,6 +27,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return PlatformApp(
       title: 'Flutter Demo',
+      android:(c)=> MaterialAppData(
+        darkTheme: ThemeData.dark(),
+        theme: ThemeData(),
+      ),
       // theme: ThemeData(
       //   primarySwatch: Colors.blue,
       //   visualDensity: VisualDensity.adaptivePlatformDensity,

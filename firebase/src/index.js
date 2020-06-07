@@ -5,7 +5,7 @@ let getData = async () => {
   const response = await fetch(
     "https://us-central1-weclean-4af67.cloudfunctions.net/getAllCleanups"
   );
-  console.log();
+  console.log("SMH");
   return response;
 };
 
@@ -16,13 +16,13 @@ const heatmap = (data) =>
     data: data,
     colorRange: [
       // BLUE
-      // [239, 243, 255],
-      // [198, 219, 239],
+      // [239, 243, 255, 160],
+      // [198, 219, 239, 240],
       // [158, 202, 225],
       // [107, 174, 214],
       // [49, 130, 189],
       // [8, 81, 156],
-      //GREEN
+      // //GREEN
     //   [237,248,251,140],
     //   [204,236,230,180],
     //   [153,216,201],

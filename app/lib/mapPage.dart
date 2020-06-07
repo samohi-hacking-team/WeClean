@@ -43,6 +43,7 @@ class MapPage extends StatelessWidget {
                 target: const LatLng(34.0195, -118.4912),
                 zoom: 12.0,
               ),
+              
               markers: markers,
               myLocationEnabled: true,
               myLocationButtonEnabled: true,

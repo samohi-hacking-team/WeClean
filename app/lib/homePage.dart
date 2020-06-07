@@ -65,59 +65,52 @@ class HomePage extends StatelessWidget {
               Container(
                 width: ((MediaQuery.of(context).size.width - 32) / 3) * 2,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: 23,
-                        child: PlatformText(
-                          document['name'] ?? "",
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 22,
-                            color: isMaterial(context)
-                                ? Theme.of(context).textTheme.bodyText1.color
-                                : CupertinoTheme.of(context)
-                                    .textTheme
-                                    .textStyle
-                                    .color,
-                          ),
+                      PlatformText(
+                        document['name'] ?? "",
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 26,
+                          color: isMaterial(context)
+                              ? Theme.of(context).textTheme.bodyText1.color
+                              : CupertinoTheme.of(context)
+                                  .textTheme
+                                  .textStyle
+                                  .color,
                         ),
                       ),
-                      SizedBox(
-                        height: 15,
-                        child: PlatformText(
-                          document['description'] ?? "",
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: isMaterial(context)
-                                ? Theme.of(context).textTheme.bodyText1.color
-                                : CupertinoTheme.of(context)
-                                    .textTheme
-                                    .textStyle
-                                    .color,
-                          ),
+                      SizedBox(height: 8,),
+                      PlatformText(
+                        document['description'] ?? "",
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: isMaterial(context)
+                              ? Theme.of(context).textTheme.bodyText1.color
+                              : CupertinoTheme.of(context)
+                                  .textTheme
+                                  .textStyle
+                                  .color,
                         ),
                       ),
-                      SizedBox(
-                        height: 13,
-                        child: PlatformText(
-                          document['address'] ?? "",
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: isMaterial(context)
-                                ? Theme.of(context).textTheme.bodyText1.color
-                                : CupertinoTheme.of(context)
-                                    .textTheme
-                                    .textStyle
-                                    .color,
-                          ),
+                      SizedBox(height: 8,),
+                      PlatformText(
+                        (document['address'] ?? "").split(', ')[1],
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: isMaterial(context)
+                              ? Theme.of(context).textTheme.bodyText1.color
+                              : CupertinoTheme.of(context)
+                                  .textTheme
+                                  .textStyle
+                                  .color,
                         ),
                       ),
                     ],

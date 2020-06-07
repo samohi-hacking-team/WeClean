@@ -13,42 +13,52 @@ class CleanupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PlatformScaffold(
-      appBar: PlatformAppBar(title: PlatformText(document['name'] ?? 'Cleanup')),
+      appBar:
+          PlatformAppBar(title: PlatformText(document['name'] ?? 'Cleanup')),
       body: Column(
         children: [
           imageMaker(document['imagePath'], context),
-          SizedBox(height: 8,),
-          Card(
-            child: PlatformText(
-              document['name'] ?? "",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 32,
-                color: isMaterial(context)
-                    ? Theme.of(context).textTheme.bodyText1.color
-                    : CupertinoTheme.of(context).textTheme.textStyle.color,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: PlatformButton(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  PlatformText(
+                    document['name'] ?? "",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 32,
+                      color: isMaterial(context)
+                          ? Theme.of(context).textTheme.bodyText1.color
+                          : CupertinoTheme.of(context).textTheme.textStyle.color,
+                    ),
+                  ),
+                  PlatformText(
+                    document['description'] ?? "",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: isMaterial(context)
+                          ? Theme.of(context).textTheme.bodyText1.color
+                          : CupertinoTheme.of(context).textTheme.textStyle.color,
+                    ),
+                  ),
+                  Divider(
+                    height: 12,
+                  ),
+                  PlatformText(
+                    document['address'] ?? "",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: isMaterial(context)
+                          ? Theme.of(context).textTheme.bodyText1.color
+                          : CupertinoTheme.of(context).textTheme.textStyle.color,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-          PlatformText(
-            document['description'] ?? "",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 22,
-              color: isMaterial(context)
-                  ? Theme.of(context).textTheme.bodyText1.color
-                  : CupertinoTheme.of(context).textTheme.textStyle.color,
-            ),
-          ),
-          SizedBox(height: 12,),
-          PlatformText(
-            document['address'] ?? "",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 22,
-              color: isMaterial(context)
-                  ? Theme.of(context).textTheme.bodyText1.color
-                  : CupertinoTheme.of(context).textTheme.textStyle.color,
             ),
           ),
         ],

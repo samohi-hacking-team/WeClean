@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:app/tensorFlow.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import 'package:geolocator/geolocator.dart';
+import 'package:tflite/tflite.dart';
 
 class CreatePage extends StatefulWidget {
   @override
@@ -55,7 +55,7 @@ class _CreatePageState extends State<CreatePage> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
+      child: ListView(
         children: [
           Container(
             height: 90,
@@ -108,7 +108,19 @@ class _CreatePageState extends State<CreatePage> {
             width: MediaQuery.of(context).size.width - 32,
             child: PlatformButton(
               onPressed: () async {
-                await tensorflowStuff(_image);
+                print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+                await Tflite.loadModel(
+                  model: "tensorflow/model.tflite",
+                  labels: "tensorflow/dict.txt",
+                  numThreads: 1,
+                );
+
+                print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~2');
+
+                print(await Tflite.runModelOnImage(
+                  path: _image.path,
+                ));
+                print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```');
 
                 Position position = await Geolocator()
                     .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -123,9 +135,7 @@ class _CreatePageState extends State<CreatePage> {
                 'Submit',
               ),
               color: isMaterial(context)
-                  ? (Theme.of(context).brightness == Brightness.light
-                      ? Colors.blue
-                      : Colors.grey)
+                  ? Colors.blue
                   : (CupertinoTheme.brightnessOf(context) == Brightness.light
                       ? CupertinoColors.activeBlue
                       : CupertinoColors.systemGrey4),

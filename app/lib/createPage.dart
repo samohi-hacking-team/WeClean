@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import 'package:geolocator/geolocator.dart';
+import 'package:tflite/tflite.dart';
 
 class CreatePage extends StatefulWidget {
   @override
@@ -54,7 +55,7 @@ class _CreatePageState extends State<CreatePage> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
+      child: ListView(
         children: [
           Container(
             height: 90,
@@ -104,10 +105,23 @@ class _CreatePageState extends State<CreatePage> {
           ),
           SizedBox(
             height: 64,
-            width: MediaQuery.of(context).size.width-32,
+            width: MediaQuery.of(context).size.width - 32,
             child: PlatformButton(
-              
               onPressed: () async {
+                print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+                await Tflite.loadModel(
+                  model: "tensorflow/model.tflite",
+                  labels: "tensorflow/dict.txt",
+                  numThreads: 1,
+                );
+
+                print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~2');
+
+                print(await Tflite.runModelOnImage(
+                  path: _image.path,
+                ));
+                print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```');
+
                 Position position = await Geolocator()
                     .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
@@ -120,8 +134,11 @@ class _CreatePageState extends State<CreatePage> {
               child: PlatformText(
                 'Submit',
               ),
-              color: isMaterial(context)?(Theme.of(context).brightness==Brightness.light?Colors.blue:Colors.grey):(CupertinoTheme.brightnessOf(context)==Brightness.light?CupertinoColors.activeBlue:CupertinoColors.systemGrey4),
-             
+              color: isMaterial(context)
+                  ? Colors.blue
+                  : (CupertinoTheme.brightnessOf(context) == Brightness.light
+                      ? CupertinoColors.activeBlue
+                      : CupertinoColors.systemGrey4),
             ),
           ),
           Container(

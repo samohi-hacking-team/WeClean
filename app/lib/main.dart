@@ -5,6 +5,7 @@ import 'homePage.dart';
 import 'mapPage.dart';
 import 'createPage.dart';
 import 'signInPage.dart';
+import 'tensorFlow.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       //   primarySwatch: Colors.blue,
       //   visualDensity: VisualDensity.adaptivePlatformDensity,
       // ),
-      home: SignInPage(),
+      home: BigBoi(),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:app/tensorFlow.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -104,10 +105,11 @@ class _CreatePageState extends State<CreatePage> {
           ),
           SizedBox(
             height: 64,
-            width: MediaQuery.of(context).size.width-32,
+            width: MediaQuery.of(context).size.width - 32,
             child: PlatformButton(
-              
               onPressed: () async {
+                await tensorflowStuff(_image);
+
                 Position position = await Geolocator()
                     .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
@@ -120,8 +122,13 @@ class _CreatePageState extends State<CreatePage> {
               child: PlatformText(
                 'Submit',
               ),
-              color: isMaterial(context)?(Theme.of(context).brightness==Brightness.light?Colors.blue:Colors.grey):(CupertinoTheme.brightnessOf(context)==Brightness.light?CupertinoColors.activeBlue:CupertinoColors.systemGrey4),
-             
+              color: isMaterial(context)
+                  ? (Theme.of(context).brightness == Brightness.light
+                      ? Colors.blue
+                      : Colors.grey)
+                  : (CupertinoTheme.brightnessOf(context) == Brightness.light
+                      ? CupertinoColors.activeBlue
+                      : CupertinoColors.systemGrey4),
             ),
           ),
           Container(

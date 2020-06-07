@@ -4,25 +4,13 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'homePage.dart';
 import 'mapPage.dart';
 import 'createPage.dart';
+import 'signInPage.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  PlatformTabController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = new PlatformTabController();
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PlatformApp(
@@ -35,7 +23,28 @@ class _MyAppState extends State<MyApp> {
       //   primarySwatch: Colors.blue,
       //   visualDensity: VisualDensity.adaptivePlatformDensity,
       // ),
-      home: PlatformTabScaffold(
+      home: SignInPage(),
+    );
+  }
+}
+
+class BigBoi extends StatefulWidget {
+  @override
+  _BigBoiState createState() => _BigBoiState();
+}
+
+class _BigBoiState extends State<BigBoi> {
+  PlatformTabController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = new PlatformTabController();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PlatformTabScaffold(
         appBarBuilder: (c, i) {
           switch (i) {
             case 0:
@@ -82,7 +91,6 @@ class _MyAppState extends State<MyApp> {
             title: Text('Create'),
           ),
         ],
-      ),
-    );
+      );
   }
 }

@@ -40,8 +40,8 @@ class MapPage extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: PlatformMap(
               initialCameraPosition: CameraPosition(
-                target: const LatLng(34.0522, -118.2437),
-                zoom: 16.0,
+                target: const LatLng(34.0195, -118.4912),
+                zoom: 12.0,
               ),
               markers: markers,
               myLocationEnabled: true,
@@ -56,10 +56,10 @@ class MapPage extends StatelessWidget {
                     controller.animateCamera(
                       CameraUpdate.newCameraPosition(
                         const CameraPosition(
-                          bearing: 270.0,
-                          target: LatLng(51.5160895, -0.1294527),
+                          bearing: 40.0,
+                          target: LatLng(34.0195, -118.4912),
                           tilt: 30.0,
-                          zoom: 18,
+                          zoom: 13.0,
                         ),
                       ),
                     );
